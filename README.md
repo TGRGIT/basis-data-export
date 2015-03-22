@@ -3,6 +3,8 @@
 Utility that exports and saves your Basis B1 device's uploaded sensor data.
 You can learn more about Basis at [http://www.mybasis.com/](http://www.mybasis.com/)
 
+This repository is a fork of the original by btroia, just modified to output the metrics to STDOUT instead
+
 ## Instructions
 
 In order to use this script, you must already have a Basis account (and a Basis B1 band).
