@@ -215,6 +215,7 @@ class BasisExport
                 throw new Exception("ERROR: Could not save data to file $file!");
                 return false;
             }
+            echo $result;
         }
     }
 

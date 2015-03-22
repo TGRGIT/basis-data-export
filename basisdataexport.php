@@ -76,34 +76,39 @@ if (php_sapi_name() == "cli") {
 $basis = new BasisExport($settings['basis_username'], $settings['basis_password']);
 $basis->debug = DEBUG;
 
-// Query Basis API for biometric data
-try {
-    $basis->getMetrics($settings['basis_export_date'], $settings['basis_export_format']);
-} catch (Exception $e) {
-    echo 'Exception: ',  $e->getMessage(), "\n";
+switch ($settings['basis_export']) {
+    case "metrics":
+        // Query Basis API for biometric data
+        try {
+            $basis->getMetrics($settings['basis_export_date'], $settings['basis_export_format']);
+        } catch (Exception $e) {
+            echo 'Exception: ',  $e->getMessage(), "\n";
+        }
+        break;
+    case "activity":
+        // Query Basis API for activity data
+        try {
+            $basis->getActivities($settings['basis_export_date'], $settings['basis_export_format']);
+        } catch (Exception $e) {
+            echo 'Exception: ',  $e->getMessage(), "\n";
+        }
+        break;
+    case "sleep":
+        // Query Basis API for sleep data
+        try {
+            $basis->getSleep($settings['basis_export_date'], $settings['basis_export_format']);
+        } catch (Exception $e) {
+            echo 'Exception: ',  $e->getMessage(), "\n";
+        }
+        break;
 }
-
-// Query Basis API for sleep data
-try {
-    $basis->getSleep($settings['basis_export_date'], $settings['basis_export_format']);
-} catch (Exception $e) {
-    echo 'Exception: ',  $e->getMessage(), "\n";
-}
-
-// Query Basis API for activity data
-try {
-    $basis->getActivities($settings['basis_export_date'], $settings['basis_export_format']);
-} catch (Exception $e) {
-    echo 'Exception: ',  $e->getMessage(), "\n";
-}
-
 
 /**
 * Take parameters via command-line args
 **/
 function runCommandLine()
 {
-    $options = getopt("h::u::p::d::f::");
+    $options = getopt("h::u::p::d::f::r::");
     $settings = array();
     $settings['basis_username'] = (!defined('BASIS_USERNAME')) ? '' : BASIS_USERNAME;
     $settings['basis_password'] = (!defined('BASIS_PASSWORD')) ? '' : BASIS_PASSWORD;
@@ -152,6 +157,13 @@ function runCommandLine()
                 die ("No format specified!\n");
             } else {
                 $settings['basis_export_format'] = trim($value);
+            }
+        }
+        if ($key == 'r') {
+            if (empty($value)) {
+                die ("No format specified!\n");
+            } else {
+                $settings['basis_export'] = trim($value);
             }
         }
 
